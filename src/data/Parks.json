@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Willow Creek Park",
+    "street": "8000 E Phillips Cir",
+    "city": "Centennial",
+    "state": "CO",
+    "zip": "80112",
+    "url": "http://ssprd.org/",
+    "pos": {"lat":39.569810,"lng":-104.896160}
+  },
+  {
+    "name": "Centennial Center Park",
+    "street": "13050 E Peakview Ave",
+    "city": "Centennial",
+    "state": "CO",
+    "zip": "80111",
+    "url": "http://centennialco.gov/",
+    "pos": {"lat":39.596630,"lng":-104.836720}
+  },
+  {
+    "name": "Walnut Hills Park",
+    "street": "8443 E Davies Ave",
+    "city": "Greenwood Village",
+    "state": "CO",
+    "zip": "80112",
+    "url": "http://ssprd.org/",
+    "pos": {"lat":39.589760,"lng":-104.825450}
+  },
+  {
+    "name": "John Derry Park",
+    "street": "312 Inverness Dr S",
+    "city": "Englewood",
+    "state": "CO",
+    "zip": "80112",
+    "url": "http://invernessmetro.com",
+    "pos": {"lat":39.563440,"lng":-104.861770}
+  },
+  {
+    "name": "Hunters Hill Park",
+    "street": "7275 S Xanthia St",
+    "city": "Centennial",
+    "state": "CO",
+    "zip": "80112",
+    "url": "http://ssprd.org/",
+    "pos": {"lat":39.584110,"lng":-104.890480}
+  },
+  {
+    "name": "Dove Valley Regional Park",
+    "street": "7900 S Potomac St",
+    "city": "Englewood",
+    "state": "CO",
+    "zip": "80112",
+    "url": "http://auroragov.org/",
+    "pos": {"lat":39.575300,"lng":-104.826230}
+  },
+  {
+    "name": "Silo Park",
+    "street": "9300 E Orchard Rd",
+    "city": "Greenwood Village",
+    "state": "CO",
+    "zip": "80111",
+    "url": "http://greenwoodvillage.com",
+    "pos": {"lat":39.609030,"lng":-104.879610}
+  },
+  {
+    "name": "Sweetwater Park",
+    "street": "8300-1/2 Sweet Water Rd",
+    "city": "Lone Tree",
+    "state": "CO",
+    "zip": "80124",
+    "url": "http://ssprd.org/",
+    "pos": {"lat":39.548860,"lng":-104.890010}
+  },
+    {
+    "name": "Cook Creek Park",
+    "street": "8711 Lone Tree Pkwy",
+    "city": "Lone Tree",
+    "state": "CO",
+    "zip": "80124",
+    "url": "http://ssprd.org/",
+    "pos": {"lat":39.543110,"lng":-104.895530}
+  }
+]
