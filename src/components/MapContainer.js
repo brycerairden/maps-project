@@ -12,6 +12,7 @@ FS_VERSION = '20180323';
 class MapContainer extends Component {
 
   state = {
+    map: null,
     activeMarker: {},
     activeLocation: {},
     activeMarkerProps: {},
@@ -39,6 +40,13 @@ class MapContainer extends Component {
   }
 
   componentWillReceiveProps = (props) => {
+    if (this.state.markers.length !== props.locations.length) {
+      this.closeInfoWindow();
+      this.updateMarkers(props.locations);
+      this.setState({activeMarker: null});
+      return;
+    }
+
     if (props.selectedIndex === null || typeof(props.selectedIndex) === "undefined") {
       return;
     };
@@ -157,13 +165,14 @@ class MapContainer extends Component {
           <div className="location-info">
             <h1>{activeMarkerProps.name}</h1>
             {activeMarkerProps && activeMarkerProps.url ? ( <h3><a href={activeMarkerProps.url}>{activeMarkerProps.url}</a></h3> ) : "" }
-            {activeMarkerProps && activeMarkerProps.images ? ( <div><img alt = {"Picture of " + activeMarkerProps.name} src={activeMarkerProps.images.items[0].prefix + "100x100" + activeMarkerProps.images.items[0].suffix }/></div> ) : "" }
+            {activeMarkerProps && activeMarkerProps.images ? ( <div><img alt = {"Picture of " + activeMarkerProps.name} src={activeMarkerProps.images.items[0].prefix + "100x100" + activeMarkerProps.images.items[0].suffix }/></div> ) : "Error: No Image Found" }
           </div>
         </InfoWindow>
       </Map>
     );
   }
 }
+
 
 export default GoogleApiWrapper({
   apiKey: API_MAPS,

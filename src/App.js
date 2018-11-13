@@ -75,12 +75,13 @@ class App extends Component {
           zoom={zoom}
           locations={filter}
           selectedIndex={selectedIndex}
+          clickList={this.clickList}
         />
         <ParksList
           open={open}
           toggleDrawer={this.toggleDrawer}
           locations={filter}
-          filterLocations={this.updateQuery }
+          filterLocations={this.updateQuery}
           clickList={this.clickList}
         />
       </div>

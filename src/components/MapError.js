@@ -11,12 +11,10 @@ class MapError extends Component {
     this.setState({timeout});
   }
 
-    // we clear the timeout
   componentWillUnmount = () => {
     window.clearTimeout(this.state.timeout);
   }
 
-    // this function shows the error message
   showError = () => {
     this.setState({show: true})
   }
