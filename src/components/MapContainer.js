@@ -8,6 +8,10 @@ API_MAPS = 'AIzaSyDEcY5vWUNc2VHlELqkRiB4XhUah2AYYl0',
 CLIENT_ID = 'LFRG3KVSHW353K13FXFKQZ1LKUGLYBYCG4EPOHFCOO4UV0G5',
 CLIENT_SECRET = 'FWUWLNPZW52VYVXZA5ZZN4OZAOR2CKGLU13HUCMGQHB1TTDW';
 
+window.gm_authFailure = () => {
+    alert("There was a problem with the Google Maps API Key. Please check your API_MAPS value in ./src/components/MapContainer.js");
+}
+
 class MapContainer extends Component {
 
   state = {
@@ -53,6 +57,8 @@ class MapContainer extends Component {
     // Treat the List View click just like you would for clicking on the map icon to select the appropriate location
     this.onMarkerClick(this.state.markerProps[props.selectedIndex], this.state.markers[props.selectedIndex]);
   }
+
+
 
   onMarkerClick = (props, marker, e) => {
     this.closeInfoWindow();
@@ -139,6 +145,9 @@ class MapContainer extends Component {
     this.setState({ markers, markerProps });
   }
 
+
+
+
   render() {
     const centerPosition = { lat: 39.572790, lng: -104.868970 },
     { activeMarkerProps, activeMarker, showingInfoWindow } = this.state;
@@ -153,6 +162,7 @@ class MapContainer extends Component {
         style={mapStyles}
         initialCenter={centerPosition}
         onClick={this.closeInfoWindow}
+        authFail={this.props.authFail}
       >
         {this.props.locations.map(location => (
           <Marker
