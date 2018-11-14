@@ -1,6 +1,8 @@
 # Parks Map
 The application shows the top parks of Centennial, Colorado on a Google map. Built for the Udacity Front End Developer Nanodegree course. Thanks to Doug Brown, and his walkthrough (https://www.youtube.com/watch?v=NVAVLCJwAAo), used to understand and troubleshoot this project.
 
+The project utilizes the built in service worker that is generated when running the create-react-app command in the terminal. The serviceWorker.js file is imported by the index.js file, which then calls the serviceWorker.register() function. This function registers the service worker in the production build only and will require you utilize the "build" instructions in the Note: section of "How to Launch"
+
 ## Table of Contents
 
 * [How to Launch](#how-to-play)
