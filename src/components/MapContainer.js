@@ -101,7 +101,8 @@ class MapContainer extends Component {
           }
         })
         .catch(function() {
-          console.log('Fetch Request error');
+          console.log('Fetch Request error')
+          alert('There was an issue with getting the Foursquare data. Please try again later')
   });
 
   }
