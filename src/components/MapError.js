@@ -5,16 +5,13 @@ class MapError extends Component {
     show: false,
     timeout: null
   }
-
+  //wait .8 seconds for Google to respond
   componentDidMount = () => {
     let timeout = window.setTimeout(this.showError, 800);
     this.setState({timeout});
   }
 
-  componentWillUnmount = () => {
-    window.clearTimeout(this.state.timeout);
-  }
-
+  // Show error function
   showError = () => {
     this.setState({show: true})
   }

@@ -35,6 +35,7 @@ class ParksList extends Component {
     }
   };
 
+  // updates the query as the user types and sends the new query to the filterLocations propery from App.js
   updateQuery = (newQuery) => {
     this.setState({ query: newQuery });
     this.props.filterLocations(newQuery);

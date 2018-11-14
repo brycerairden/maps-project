@@ -5,9 +5,8 @@ import MapError from './MapError';
 
 const mapStyles = { width: '100%', height: '100%' },
 API_MAPS = 'AIzaSyDEcY5vWUNc2VHlELqkRiB4XhUah2AYYl0',
-FS_CLIENT = 'LFRG3KVSHW353K13FXFKQZ1LKUGLYBYCG4EPOHFCOO4UV0G5',
-FS_SECRET = 'FWUWLNPZW52VYVXZA5ZZN4OZAOR2CKGLU13HUCMGQHB1TTDW',
-FS_VERSION = '20180323';
+CLIENT_ID = 'LFRG3KVSHW353K13FXFKQZ1LKUGLYBYCG4EPOHFCOO4UV0G5',
+CLIENT_SECRET = 'FWUWLNPZW52VYVXZA5ZZN4OZAOR2CKGLU13HUCMGQHB1TTDW';
 
 class MapContainer extends Component {
 
@@ -34,56 +33,59 @@ class MapContainer extends Component {
     });
   };
 
+  // Match the names of the parks against the Foursquare data
   parksMatch = (props, data) => {
-    let parkMatch = data.response.venues.filter(restaurant => restaurant.name.includes(props.name) || props.name.includes(restaurant.name));
+    let parkMatch = data.response.venues.filter(park => park.name.includes(props.name) || props.name.includes(park.name));
     return parkMatch;
   }
 
   componentWillReceiveProps = (props) => {
+    //When receiving props, check if the numbers of markers has changed and update the map appropriately
     if (this.state.markers.length !== props.locations.length) {
       this.closeInfoWindow();
       this.updateMarkers(props.locations);
-      this.setState({activeMarker: null});
       return;
     }
-
+    // Check if there is a Selected Index from the list view to highlight on the map
     if (props.selectedIndex === null || typeof(props.selectedIndex) === "undefined") {
       return;
     };
+    // Treat the List View click just like you would for clicking on the map icon to select the appropriate location
     this.onMarkerClick(this.state.markerProps[props.selectedIndex], this.state.markers[props.selectedIndex]);
   }
-
 
   onMarkerClick = (props, marker, e) => {
     this.closeInfoWindow();
 
-    let url = `https://api.foursquare.com/v2/venues/search?client_id=${FS_CLIENT}&client_secret=${FS_SECRET}&v=${FS_VERSION }&radius=100&ll=${props.position.lat},${props.position.lng}&llAcc=100`;
-    let headers = new Headers();
-    let request = new Request(url, {
-        method: 'GET',
-        headers
-    });
-
     let activeMarkerProps;
-    fetch(request)
+    // Make a call to Foursquare for all places within 50m of the latitude and longitude recorded in the Parks.json file
+    fetch(`https://api.foursquare.com/v2/venues/search?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=20180323&radius=50&llAcc=50&ll=${props.position.lat},${props.position.lng}`, {
+      method: 'GET'
+    })
+      // Prepare response for parsing as json
       .then(response => response.json())
       .then(result => {
           let pMatch = this.parksMatch(props, result);
+          // Add the matched property as a value to the activeMarkerProps object
           activeMarkerProps = {
             ...props,
             fs: pMatch[0]
           };
           console.log('pass')
-
+          // If the activeMarkerProps was changed from null to a value, then use the id within the file to make a request against the Likes endpoint on Foursquare
           if (activeMarkerProps.fs) {
-            let url = `https://api.foursquare.com/v2/venues/${pMatch[0].id}/photos?client_id=${FS_CLIENT}&client_secret=${FS_SECRET}&v=${FS_VERSION }`;
-            fetch(url)
+            fetch(`https://api.foursquare.com/v2/venues/${pMatch[0].id}/likes?client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=20180323`, {
+              method: 'GET'
+            })
+              // Prepare response for parsing as json
               .then(response => response.json())
+              // Take the likes response and add the like.summary value to the activeMarkerProps object
               .then(result => {
                 activeMarkerProps = {
                   ...activeMarkerProps,
-                  images: result.response.photos
+                  like: result.response.likes.summary
                 };
+                // If info is found, pull up the info window for that specific item, set that marker to active, and hand over the props for it
                 this.setState({
                   showingInfoWindow: true,
                   activeMarker: marker,
@@ -107,9 +109,12 @@ class MapContainer extends Component {
   updateMarkers = (locations) => {
     if (!locations)
       return;
+
+    // remove all markers from the map
     this.state.markers.forEach(marker => marker.setMap(null));
 
     let markerProps = [];
+    // map through all the new markers and assign them properties
     let markers = locations.map((location, index) => {
       let mProps = {
         key: index,
@@ -151,6 +156,7 @@ class MapContainer extends Component {
         {this.props.locations.map(location => (
           <Marker
             key={location.id}
+            tabindex={location.index}
             title={location.name}
             name={location.name}
             url={location.url}
@@ -165,7 +171,7 @@ class MapContainer extends Component {
           <div className="location-info">
             <h1>{activeMarkerProps.name}</h1>
             {activeMarkerProps && activeMarkerProps.url ? ( <h3><a href={activeMarkerProps.url}>{activeMarkerProps.url}</a></h3> ) : "" }
-            {activeMarkerProps && activeMarkerProps.images ? ( <div><img alt = {"Picture of " + activeMarkerProps.name} src={activeMarkerProps.images.items[0].prefix + "100x100" + activeMarkerProps.images.items[0].suffix }/></div> ) : "Error: No Image Found" }
+            {activeMarkerProps && activeMarkerProps.like ? ( <div>This park has {activeMarkerProps.like}.</div> ) : "Error: Could not pull Foursquare Data" }
           </div>
         </InfoWindow>
       </Map>

@@ -13,34 +13,41 @@ class App extends Component {
     open: false,
     selectedIndex: null
   }
-
+  // Show the full list, by using a blank filter
   componentDidMount = () => {
     this.setState({
-      ...this.state,
-      filter: this.filterParks(this.state.all, "")
+      filter: this.state.all
     });
   }
 
+  // Toggle the drawer open and close based on going to the opposite of the current state
   toggleDrawer = () => {
     this.setState({
-      selectedIndex: null,
       open: !this.state.open
     });
   }
 
+ // Function that matches the names to the query. Uses toUpperCase since includes is case sensitive
+  filterParks = (locations, query) => {
+    if (query.length > 0) {
+      let filteredList = locations.filter(park => park.name.toUpperCase().includes(query.toUpperCase()));
+      this.setState({ filter: filteredList });
+    } else {
+      this.setState({ filter: locations });
+    }
+  }
+
+  // set the filter equal to the fltered list of parts who's names match the query
   updateQuery = (query) => {
     this.setState({
       ...this.state,
-      selectedIndex: null,
-      filter: this.filterParks(this.state.all, query)
+      selectedIndex: null
     });
+    this.filterParks(this.state.all, query)
   }
 
-  filterParks = (locations, query) => {
-    let filteredList = locations.filter(restaurant => restaurant.name.toLowerCase().includes(query.toLowerCase()));
-    return filteredList;
-  }
 
+  // sets the clicked list item to the selected index so it can be toggled on the map, then closes the location
   clickList = (index) => {
     this.setState({
       selectedIndex: index,
